@@ -1,4 +1,4 @@
-![Logo](Assets/Logo.png)
+![Logo](Assets/Logo2x.png)
 
 *Do everything you were never meant to.*
 
