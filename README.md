@@ -11,9 +11,19 @@
 ```
 All projects and snippits are made for, and run on entirely **non-jailbroken** devices. While untested, most following snippits should be able to run in Playground on iPad.
 
-\* This project is for educational purposes and the code should not be used in any application targeted for the App Store. 
+\* This project is for educational purposes and the code should not be used in any application targeted for the App Store.
 
-##:iphone: Setting the Lock Screen and Home Screen Images
+##Contents
+- [:iphone: Setting Lock Screen and Home Screen Images](#iphone-setting-lock-screen-and-home-screen-images)
+- [:battery: Retrieve Device Battery Info](#battery-retrieve-device-battery-info)
+- [Retreive App Info from SpringBoard](#retrieve-app-info-from-springboard)
+- [:airplane: Check for Airplane Mode](#airplane-check-for-airplane-mode)
+- [:link:Gather Hotspot Info](#link-gather-hotspot-info)
+- [:signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)](#signal_strength-obtain-networking-info)
+ 
+---
+
+##:iphone: Setting Lock Screen and Home Screen Images
 #####WallpaperSetter.playground
 
 ```Swift
@@ -93,13 +103,13 @@ for batteryInfo in allInfo{
 }
 ```
 
-##Retreive Installed App Info and Launch Apps from SpringBoard
+##Retreive App Info from SpringBoard
 <img src="Assets/AppExplorer-Logo.png" height="45">
 
 I've created an entire project around this idea called [AppExplorer](https://github.com/joncardasis/AppExplorer). Check out the repo for more info and how you can implement it in your own project.
 
 
-##:airplane:Check for Airplane Mode
+##:airplane: Check for Airplane Mode
 #####AirplaneManager.swift
 ```Swift
 class AirplaneManager{
@@ -161,7 +171,7 @@ reader.synchronize() //Gets updated values
 print("Connected Devices: \(reader.connectedDevices)") //Check again
 ```
 
-##Obtain Networking Info (Wifi, Tethering, Etc.)
+##:signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)
 #####NetworkManager.swift
 This code requires **no** private apis. I use low level C to obtain the info from the system.
 
