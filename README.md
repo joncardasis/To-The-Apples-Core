@@ -16,11 +16,11 @@ All projects and snippits are made for, and run on entirely **non-jailbroken** d
 ##Contents
 - [:iphone: Setting Lock Screen and Home Screen Images](#iphone-setting-lock-screen-and-home-screen-images)
 - [:battery: Retrieve Device Battery Info](#battery-retrieve-device-battery-info)
-- [Retreive App Info from SpringBoard](#retrieve-app-info-from-springboard)
+- [Retreive App Info from SpringBoard](#retreive-app-info-from-springboard)
 - [:airplane: Check for Airplane Mode](#airplane-check-for-airplane-mode)
-- [:link:Gather Hotspot Info](#link-gather-hotspot-info)
-- [:signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)](#signal_strength-obtain-networking-info)
- 
+- [:link: Gather Hotspot Info](#link-gather-hotspot-info)
+- [:signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)](#signal_strength-obtain-networking-info-wifi-tethering-etc)
+
 ---
 
 ##:iphone: Setting Lock Screen and Home Screen Images
@@ -135,7 +135,7 @@ print("Airplane Mode Enabled: \(AirplaneManager.airplaneModeEnabled())")
 ```
 
 
-##:link:Gather Hotspot Info
+##:link: Gather Hotspot Info
 #####MobileHotspotReader.swift
 ###Setup
 In order to use the SCDynamicStoreCreate and SCDynamicStoreCopyValue functions
