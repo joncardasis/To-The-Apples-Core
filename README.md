@@ -99,5 +99,76 @@ for batteryInfo in allInfo{
 I've created an entire project around this idea called [AppExplorer](https://github.com/joncardasis/AppExplorer). Check out the repo for more info and how you can implement it in your own project.
 
 
+##:airplane:Check for Airplane Mode
+#####AirplaneManager.swift
+```Swift
+class AirplaneManager{
+    //Returns nil if the api could not be found
+    static func airplaneModeEnabled() -> Bool?{
+        guard case let handle = dlopen("/System/Library/PrivateFrameworks/AppSupport.framework/AppSupport", RTLD_LAZY) where handle != nil else{
+            return nil
+        }
+        guard let c = NSClassFromString("RadiosPreferences") as? NSObject.Type else {
+            return nil
+        }
+        let radioPreferences = c.init()
+        
+        if radioPreferences.respondsToSelector(NSSelectorFromString("airplaneMode")) {
+            return radioPreferences.valueForKey("airplaneMode")!.boolValue
+        }
+        
+        return false
+    }
+}
 
+print("Airplane Mode Enabled: \(AirplaneManager.airplaneModeEnabled())")
+```
+
+
+##:link:Gather Hotspot Info
+#####MobileHotspotReader.swift
+###Setup
+In order to use the SCDynamicStoreCreate and SCDynamicStoreCopyValue functions
+the `__OSX_AVAILABLE_STARTING` macro will need to be changed for these functions.
+
+The easiest way to do this is COMMAND + CLICK on the function names in XCode which will
+take you to the respective headers. Comment out the macros as seen here:
+
+```Objective-C
+SCDynamicStoreRef __nullable SCDynamicStoreCreate (
+			CFAllocatorRef __nullable allocator,
+			CFStringRef name,
+			SCDynamicStoreCallBack __nullable callout,
+			SCDynamicStoreContext * __nullable context
+			)	/*	__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
+```
+
+```Objective-C
+CFPropertyListRef __nullable SCDynamicStoreCopyValue(
+			SCDynamicStoreRef __nullable store,
+			CFStringRef key
+			)	/*	__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
+
+```
+
+###Example Usage
+```Swift
+let reader = MobileHotspotReader.sharedReader
+print("Connected Devices: \(reader.connectedDevices)")
+print("Connected over Bluetooth: \(reader.connectionsOverBluetooth)")
+        
+reader.synchronize() //Gets updated values
+print("Connected Devices: \(reader.connectedDevices)") //Check again
+```
+
+##Obtain Networking Info (Wifi, Tethering, Etc.)
+#####NetworkManager.swift
+This code requires **no** private apis. I use low level C to obtain the info from the system.
+
+###Example Usage:
+```Swift
+print("Wifi is Enabled     : \(NetworkManager.wifiEnabled())")
+print("Wifi is Connected   : \(NetworkManager.wifiConnected())")
+print("Currently Tethering : \(NetworkManager.isTethering())")
+```
 
