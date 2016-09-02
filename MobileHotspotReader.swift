@@ -19,14 +19,12 @@
 //                 SCDynamicStoreContext		* __nullable	context
 //                 )		/*__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
 //
-// {AND:}
+// AND
 //
-// SCDynamicStoreRef __nullable SCDynamicStoreCreate			(
-//                 CFAllocatorRef			__nullable	allocator,
-//                 CFStringRef					name,
-//                 SCDynamicStoreCallBack		__nullable	callout,
-//                 SCDynamicStoreContext		* __nullable	context
-//                 )  			/*__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
+// CFPropertyListRef __nullable SCDynamicStoreCopyValue(
+//                 SCDynamicStoreRef __nullable store,
+//                 CFStringRef key
+//                 )        /*__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
 //
 
 
