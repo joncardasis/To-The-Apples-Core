@@ -13,7 +13,7 @@ All projects and snippits are made for, and run on entirely **non-jailbroken** d
 
 \* This project is for educational purposes and the code should not be used in any application targeted for the App Store.
 
-##Contents
+## Contents
 - [:iphone: Setting Lock Screen and Home Screen Images](#iphone-setting-lock-screen-and-home-screen-images)
 - [:battery: Retrieve Device Battery Info](#battery-retrieve-device-battery-info)
 - [Retreive App Info from SpringBoard](#retreive-app-info-from-springboard)
@@ -23,7 +23,7 @@ All projects and snippits are made for, and run on entirely **non-jailbroken** d
 
 ---
 
-##:iphone: Setting Lock Screen and Home Screen Images
+## :iphone: Setting Lock Screen and Home Screen Images
 #####WallpaperSetter.playground
 
 ```Swift
@@ -53,7 +53,7 @@ func setWallpaper(image: UIImage, location: WallpaperLocation) -> Bool{
 
 setWallpaper(image, location: [.homescreen, .lockscreen])
 ```
-##:battery: Retrieve Device Battery Info
+## :battery: Retrieve Device Battery Info
 ```Swift
 import Darwin
 import Foundation
@@ -103,14 +103,14 @@ for batteryInfo in allInfo{
 }
 ```
 
-##Retreive App Info from SpringBoard
+## Retreive App Info from SpringBoard
 <img src="Assets/AppExplorer-Logo.png" height="45">
 
 I've created an entire project around this idea called [AppExplorer](https://github.com/joncardasis/AppExplorer). Check out the repo for more info and how you can implement it in your own project.
 
 
-##:airplane: Check for Airplane Mode
-#####AirplaneManager.swift
+## :airplane: Check for Airplane Mode
+##### AirplaneManager.swift
 ```Swift
 class AirplaneManager{
     //Returns nil if the api could not be found
@@ -135,9 +135,9 @@ print("Airplane Mode Enabled: \(AirplaneManager.airplaneModeEnabled())")
 ```
 
 
-##:link: Gather Hotspot Info
-#####MobileHotspotReader.swift
-###Setup
+## :link: Gather Hotspot Info
+##### MobileHotspotReader.swift
+### Setup
 In order to use the SCDynamicStoreCreate and SCDynamicStoreCopyValue functions
 the `__OSX_AVAILABLE_STARTING` macro will need to be changed for these functions.
 
@@ -161,7 +161,7 @@ CFPropertyListRef __nullable SCDynamicStoreCopyValue(
 
 ```
 
-###Example Usage
+### Example Usage
 ```Swift
 let reader = MobileHotspotReader.sharedReader
 print("Connected Devices: \(reader.connectedDevices)")
@@ -171,11 +171,11 @@ reader.synchronize() //Gets updated values
 print("Connected Devices: \(reader.connectedDevices)") //Check again
 ```
 
-##:signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)
-#####NetworkManager.swift
+## :signal_strength: Obtain Networking Info (Wifi, Tethering, Etc.)
+##### NetworkManager.swift
 This code requires **no** private apis. I use low level C to obtain the info from the system.
 
-###Example Usage:
+### Example Usage:
 ```Swift
 print("Wifi is Enabled     : \(NetworkManager.wifiEnabled())")
 print("Wifi is Connected   : \(NetworkManager.wifiConnected())")
