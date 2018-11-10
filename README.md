@@ -1,3 +1,5 @@
+:warning: **DEPRECATED:** This project is deprecated due to many of the provided examples are now protected under new iOS systems. Apple has since prevented dynamic linking with certain private frameworks such as Springboard. Feel free to poke around and use any resources you find useful.
+
 ![Logo](Assets/Logo2x.png)
 
 *Do everything you were never meant to.*
