@@ -2,7 +2,7 @@
 //  MobileHotspotReader.swift
 //
 //  Created by Cardasis, Jonathan (J.) on 9/1/16.
-//  Copyright © 2016 Jonathan Cardasis. All rights reserved.
+//  Copyright © 2019 Jonathan Cardasis. All rights reserved.
 //
 //****REQUIRED SETUP****
 //
@@ -27,8 +27,6 @@
 //                 )        /*__OSX_AVAILABLE_STARTING(__MAC_10_1,__IPHONE_NA)*/;
 //
 
-
-
 import Foundation
 import SystemConfiguration
 
@@ -41,77 +39,64 @@ class MobileHotspotReader: NSObject{
     }
     
     static let sharedReader = MobileHotspotReader()
-    var state: HotspotState?
-    var connectedDevices: Int?
-    var maxConnectedDevices: Int?
-    var allowsConnections: Bool?
     
-    //Number of connections over each type
-    var connectionsOverWifi: Int?
-    var connectionsOverBluetooth: Int?
-    var connectionsOverEthernet: Int?
-    var connectionsOverUSBEthernet: Int?
-    
-    var internalInterfaces: CFPropertyList?
-    var externalInterfaces: CFPropertyList?
-    
-    
-    override init(){
-        super.init()
-        synchronize()
+    var state: HotspotState? {
+        guard let currentState = modemInfo?.value(forKey: "State") as? Int else { return nil }
+        return currentState == HotspotState.on.rawValue ? .on : .off
     }
     
-    /* Updates object properties */
-    func synchronize(){
-        let modemStore = SCDynamicStoreCreate(nil, "com.apple.MobileInternetSharing" as CFString, nil, nil)
-        guard let info = SCDynamicStoreCopyValue(modemStore, "com.apple.MobileInternetSharing" as CFString) else{
-            return
+    var numberOfConnectedDevices: Int? {
+        return modemValue(forKey: "Current") as? Int
+    }
+    
+    var maxConnectedDevices: Int? {
+        return modemValue(forKey: "Max") as? Int
+    }
+    
+    var allowsConnections: Bool? {
+        return modemValue(forKey: "MoreAllowed") as? Bool
+    }
+    
+    var internalInterfaces: CFPropertyList? {
+        return modemValue(forKey: "InternalInterfaces") as CFPropertyList
+    }
+    
+    var externalInterfaces: CFPropertyList? {
+        return modemValue(forKey: "ExternalInterfaces") as CFPropertyList
+    }
+    
+    // MARK: Connection types
+    
+    var connectionsOverWifi: Int? {
+        return (modemValue(forKey: "Type") as? NSObject)?.value(forKey: "AirPort") as? Int
+    }
+    
+    var connectionsOverBluetooth: Int? {
+        return (modemValue(forKey: "Type") as? NSObject)?.value(forKey: "Bluetooth") as? Int
+    }
+    
+    var connectionsOverEthernet: Int? {
+        return (modemValue(forKey: "Type") as? NSObject)?.value(forKey: "Ethernet") as? Int
+    }
+    
+    var connectionsOverUSBEthernet: Int?  {
+        return (modemValue(forKey: "Type") as? NSObject)?.value(forKey: "USB-Ethernet") as? Int
+    }
+    
+    // MARK: - Private
+    
+    private override init() {}
+    
+    private let modemStore = SCDynamicStoreCreate(nil, "com.apple.MobileInternetSharing" as CFString, nil, nil)
+    
+    private var modemInfo: CFPropertyList? {
+        return SCDynamicStoreCopyValue(modemStore, "com.apple.MobileInternetSharing" as CFString)
+    }
+    
+    private func modemValue(forKey key: String) -> Any? {
+        guard let latestInfo = modemInfo, let hosts = latestInfo.value(forKey: "Hosts") else {
+            return nil
         }
-        
-        //Update State
-        if let currentState = info.valueForKey("State") as? Int  {
-            if currentState == HotspotState.on.rawValue{
-                state = .on
-            }
-            else{
-                state = .off
-            }
-        }
-        
-        //Update Connected Devices
-        if let hosts = info.valueForKey("Hosts") {
-            if let connected = hosts.valueForKey("Current") as? Int{
-                connectedDevices = connected
-            }
-            if let maxConnected = hosts.valueForKey("Max") as? Int{
-                maxConnectedDevices = maxConnected
-            }
-            if let moreAllowed = hosts.valueForKey("MoreAllowed") as? Bool{
-                allowsConnections = moreAllowed
-            }
-            
-            
-            if let numAirport = hosts.valueForKey("Type")?.valueForKey("AirPort") as? Int{
-                connectionsOverWifi = numAirport
-            }
-            if let numBluetooth = hosts.valueForKey("Type")?.valueForKey("Bluetooth") as? Int{
-                connectionsOverBluetooth = numBluetooth
-            }
-            if let numEthernet = hosts.valueForKey("Type")?.valueForKey("Ethernet") as? Int{
-                connectionsOverEthernet = numEthernet
-            }
-            if let numUSBEthernet = hosts.valueForKey("Type")?.valueForKey("USB-Ethernet") as? Int{
-                connectionsOverUSBEthernet = numUSBEthernet
-            }
-        }
-        
-        
-        //Update interfaces
-        if let intInterfaces = info.valueForKey("InternalInterfaces"){
-            internalInterfaces = intInterfaces
-        }
-        if let extInterfaces = info.valueForKey("ExternalInterfaces"){
-            externalInterfaces = extInterfaces
-        }
+        return (hosts as? NSObject)?.value(forKey: key)
     }
 }
